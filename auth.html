@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication | EventXP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .auth-wrapper {
+            min-height: calc(100vh - 80px); /* estimate nav height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .auth-card {
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .toggle-text {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .toggle-text a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .hidden-form { display: none; }
+        
+        .half-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">EventXP</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Discover</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="glass-card auth-card">
+            
+            <!-- Alert -->
+            <div id="alertBox" class="alert"></div>
+
+            <!-- Login Form -->
+            <div id="loginView">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p class="text-muted">Sign in to book and manage events.</p>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="loginEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPass" class="form-control" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Sign In</button>
+                </form>
+                <div class="toggle-text">
+                    Don't have an account? <a onclick="toggleView('register')">Sign up</a>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerView" class="hidden-form">
+                <div class="auth-header">
+                    <h2>Join EventXP</h2>
+                    <p class="text-muted">Create an account in seconds.</p>
+                </div>
+                <form id="registerForm">
+                    <div class="half-grid">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" id="regFirstName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" id="regLastName" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="regEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="regPass" class="form-control" required autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Create Account</button>
+                </form>
+                <div class="toggle-text">
+                    Already have an account? <a onclick="toggleView('login')">Sign in</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="env-config.js"></script>
+    <script src="js/api.js?v=2"></script>
+    <script>
+        if (api.isAuthenticated()) {
+            window.location.href = 'index.html';
+        }
+
+        // Handle URL parameters for default view
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('mode') === 'register') {
+            toggleView('register');
+        }
+
+        function toggleView(view) {
+            document.getElementById('loginView').classList.toggle('hidden-form', view !== 'login');
+            document.getElementById('registerView').classList.toggle('hidden-form', view !== 'register');
+            document.getElementById('alertBox').style.display = 'none';
+        }
+
+        function showAlert(msg, isError = true) {
+            const box = document.getElementById('alertBox');
+            box.textContent = msg;
+            box.className = 'alert ' + (isError ? 'alert-error' : 'alert-success');
+            box.style.display = 'block';
+        }
+
+        // Handle Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.textContent = 'Signing in...';
+            btn.disabled = true;
+            
+            try {
+                await api.login(
+                    document.getElementById('loginEmail').value,
+                    document.getElementById('loginPass').value
+                );
+                const redirect = urlParams.get('redirect') || 'index.html';
+                window.location.href = redirect;
+            } catch (err) {
+                showAlert(err.message || 'Login failed.');
+                btn.textContent = 'Sign In';
+                btn.disabled = false;
+            }
+        });
+
+        // Handle Register
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.textContent = 'Creating account...';
+            btn.disabled = true;
+            
+            const userData = {
+                username: document.getElementById('regFirstName').value + ' ' + document.getElementById('regLastName').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPass').value,
+                role: 'USER'
+            };
+
+            try {
+                await api.signup(userData);
+                showAlert('Account created! Please sign in.', false);
+                toggleView('login');
+                // Automatically populate login email
+                document.getElementById('loginEmail').value = userData.email;
+            } catch (err) {
+                showAlert(err.message || 'Registration failed.');
+            } finally {
+                btn.textContent = 'Create Account';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

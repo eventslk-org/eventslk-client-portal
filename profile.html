@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings | EventXP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .profile-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--surface-border);
+        }
+        
+        .booking-card {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .booking-info h3 {
+            margin-bottom: 0.25rem;
+            font-size: 1.25rem;
+        }
+
+        .booking-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 600px) {
+            .booking-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .booking-card button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">EventXP</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Discover</a>
+                <button onclick="api.logout()" class="btn btn-outline" style="padding: 0.5rem 1rem;">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container" style="padding: 3rem 1.5rem;">
+        <div class="profile-header">
+            <h1 id="welcomeText">My Profile</h1>
+            <p class="text-muted">Manage your upcoming experiences and event bookings.</p>
+        </div>
+
+        <div>
+            <h2 style="margin-bottom: 1.5rem;">My Bookings</h2>
+            <div id="bookingsList" style="display: flex; flex-direction: column; gap: 1rem;">
+                <!-- Bookings populated here -->
+                <p class="text-muted">Loading your tickets...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="env-config.js"></script>
+    <script src="js/api.js?v=2"></script>
+    <script>
+        if (!api.isAuthenticated()) {
+            window.location.href = 'auth.html';
+        }
+
+        document.getElementById('welcomeText').textContent = `Hello, ${api.user.username}!`;
+
+        async function loadMyBookings() {
+            try {
+                // Get bookings for user — BookingResponse: { status, message, orderList }
+                const res = await api.getUserBookings(api.user.userId);
+                const bookings = Array.isArray(res.orderList) ? res.orderList : (res.orderList ? [res.orderList] : []);
+                
+                const list = document.getElementById('bookingsList');
+                list.innerHTML = '';
+                
+                if (bookings.length === 0) {
+                    list.innerHTML = `
+                        <div class="glass-card" style="padding: 3rem; text-align: center;">
+                            <h3 style="margin-bottom: 1rem;">No bookings yet</h3>
+                            <p class="text-muted" style="margin-bottom: 2rem;">You haven't booked any events. Discover amazing experiences right now!</p>
+                            <a href="index.html" class="btn btn-primary">Browse Events</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Fetch events for name mapping — EventResponse: { status, message, eventList }
+                let eventsCache = [];
+                try {
+                     const evtRes = await api.getEvents();
+                     eventsCache = evtRes.eventList || [];
+                } catch(e) {}
+
+                bookings.forEach(bk => {
+                    const evt = eventsCache.find(e => e.eventId === bk.eventId);
+                    const eventName = evt ? evt.name : `Event #${bk.eventId}`;
+                    const location = evt ? evt.location : 'See details';
+                    
+                    const card = document.createElement('div');
+                    card.className = 'glass-card booking-card';
+                    card.innerHTML = `
+                        <div class="booking-info">
+                            <span class="status-badge">Confirmed Ticket</span>
+                            <h3>${eventName}</h3>
+                            <div class="booking-meta">
+                                Booking ID: ${bk.bookingId} &bull; Booked on: ${new Date(bk.orderDate).toLocaleDateString()}
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" style="border-color: var(--danger); color: var(--danger);" onclick="cancelTicket('${bk.bookingId}')">
+                            Cancel Ticket
+                        </button>
+                    `;
+                    list.appendChild(card);
+                });
+
+            } catch(e) {
+                console.error(e);
+                document.getElementById('bookingsList').innerHTML = '<p class="text-muted">Error loading bookings.</p>';
+            }
+        }
+
+        async function cancelTicket(bookingId) {
+            if(confirm("Are you sure you want to cancel this booking?")) {
+                try {
+                    await api.cancelBooking(bookingId);
+                    alert("Ticket cancelled successfully.");
+                    loadMyBookings();
+                } catch(e) {
+                    alert("Error cancelling ticket: " + e.message);
+                }
+            }
+        }
+
+        loadMyBookings();
+    </script>
+</body>
+</html>
