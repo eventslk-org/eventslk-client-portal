@@ -23,12 +23,16 @@ jobs:
           docker build -t kaveengayanga12/eventslk-client-portal:${{ github.sha }} .
           docker push kaveengayanga12/eventslk-client-portal:${{ github.sha }}
 
+          # Also tag as 'latest' and push
+          docker tag kaveengayanga12/eventslk-client-portal:${{ github.sha }} kaveengayanga12/eventslk-client-portal:latest
+          docker push kaveengayanga12/eventslk-client-portal:latest
+
       - name: Update K8s Manifests
         run: |
-          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/EventsLK/eventslk-k8s-manifests.git
+          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/eventslk-org/eventslk-k8s-manifests.git
           cd eventslk-k8s-manifests
           # Updating the client portal deployment file
-          sed -i "s|image: kaveengayanga12/eventslk-client-portal:.*|image: kaveengayanga12/eventslk-client-portal:${{ github.sha }}|" k8s/client-portal-deployment.yaml
+          sed -i "s|image: kaveengayanga12/eventslk-client-portal:.*|image: kaveengayanga12/eventslk-client-portal:${{ github.sha }}|" client-portal-deployment.yaml
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add .
