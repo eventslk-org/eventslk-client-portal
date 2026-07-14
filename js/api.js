@@ -1,18 +1,16 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // EventsLK Client Portal — API client
 //
-// Talks ONLY to the API Gateway (the single external entry point) using the
-// public /api/v1 prefix. The gateway rewrites:
-//   /api/v1/auth/*  -> /auth/*    /api/v1/events/* -> /event/*    /api/v1/book/* -> /book/*
+// Talks ONLY to the Kong API gateway (the single external entry point). Kong
+// proxies the backend paths as-is (strip_path: false), so we call them directly:
+//   /auth/*   /event/*   /book/*
 //
 // Base URL comes from window.ENV.API_BASE_URL (env-config.js, injected at runtime).
 // ─────────────────────────────────────────────────────────────────────────────
 
-const API_PREFIX = '/api/v1';
-
 function resolveApiBase() {
   const root = (window.ENV && window.ENV.API_BASE_URL) ? window.ENV.API_BASE_URL : '';
-  return root.replace(/\/+$/, '') + API_PREFIX;
+  return root.replace(/\/+$/, '');
 }
 
 class ClientApiService {
@@ -103,7 +101,8 @@ class ClientApiService {
   }
 
   // ── Events (public) ──────────────────────────────────────────────────────────
-  getEvents() { return this.request('/events'); }
+  getEvents() { return this.request('/event'); }
+  getEvent(eventId) { return this.request(`/event/${encodeURIComponent(eventId)}`); }
 
   // ── Bookings (USER) ──────────────────────────────────────────────────────────
   bookEvent(eventId, userId, requestedSeats = 1) {

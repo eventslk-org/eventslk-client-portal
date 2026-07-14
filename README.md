@@ -19,26 +19,23 @@ and vanilla JavaScript**, served by **Nginx**, deployed as a container on Kubern
 
 ## Architecture
 
-All traffic goes to the **API Gateway** (the only externally reachable entry point); the
-gateway routes to `event-registration-api`. The portal calls the gateway directly using the
-public `/api/v1` prefix — no nginx API proxy.
+All traffic goes to the **Kong API gateway** (the only externally reachable entry point);
+Kong proxies the backend paths unchanged (`strip_path: false`), so the portal calls the
+real backend paths directly — no `/api/v1` prefix, no nginx API proxy.
 
 ```
-Client Browser ──HTTPS──▶ API Gateway (NodePort 30080) ──▶ event-registration-api (ClusterIP)
-   (env-config.js → window.ENV.API_BASE_URL)       /api/v1/{auth,events,book}
+Client Browser ──HTTPS──▶ Kong gateway (proxy :8000) ──▶ event-registration-api
+   (env-config.js → window.ENV.API_BASE_URL)               /{auth,event,book}
                                                           │ outbox → Kafka → NotificationService
                                                           ▼ verification / booking emails
 ```
 
-| Frontend call | Gateway → service |
+| Frontend call | Notes |
 |---|---|
-| `POST /api/v1/auth/signup`, `/login` | `/auth/...` |
-| `GET /api/v1/auth/verify-email?token=`, `POST /api/v1/auth/resend-verification` | `/auth/...` |
-| `GET /api/v1/events` | `/event` (public) |
-| `POST /api/v1/book`, `GET /api/v1/book/user/{id}`, `DELETE /api/v1/book/{id}` | `/book...` |
-
-> The shipped gateway only defines `auth` and `events` routes. Add the `book` (and `users`)
-> routes from `../FRONTEND_INTEGRATION_SPEC.md` §2 or booking actions return 404.
+| `POST /auth/signup`, `/auth/login` | public |
+| `GET /auth/verify-email?token=`, `POST /auth/resend-verification` | public |
+| `GET /event`, `GET /event/{id}` | public (event images come from S3 `imageUrl`) |
+| `POST /book`, `GET /book/user/{id}`, `DELETE /book/{id}` | USER JWT required |
 
 ## Pages
 
@@ -59,18 +56,18 @@ The backend emails `{APP_BASE_URL}/auth/verify-email?token=...`. Set the backend
 
 | File | Role |
 |---|---|
-| `.env` | Source value: `API_BASE_URL=http://localhost:30080` |
+| `.env` | Source value: `API_BASE_URL=http://localhost:8000` |
 | `env-config.template.js` | `window.ENV = { API_BASE_URL: "${API_BASE_URL}" }` |
 | `env-config.js` | Committed default (used when serving statically) |
 | `docker-entrypoint.sh` | Renders `env-config.js` from the template via `envsubst` on boot |
 
-`js/api.js` reads `window.ENV.API_BASE_URL` and calls `${API_BASE_URL}/api/v1/...`.
+`js/api.js` reads `window.ENV.API_BASE_URL` and calls `${API_BASE_URL}/auth|event|book/...`.
 In Kubernetes the value comes from the deployment's `API_BASE_URL` env var.
 
 ## Run locally
 
 ```bash
-echo 'window.ENV = { API_BASE_URL: "http://localhost:30080" };' > env-config.js
+echo 'window.ENV = { API_BASE_URL: "http://localhost:8000" };' > env-config.js
 python3 -m http.server 3001
 # open http://localhost:3001/index.html
 ```
@@ -79,7 +76,7 @@ python3 -m http.server 3001
 
 ```bash
 docker build -t kaveengayanga12/eventslk-client-portal:local .
-docker run -p 8081:80 -e API_BASE_URL=http://localhost:30080 \
+docker run -p 8081:80 -e API_BASE_URL=http://localhost:8000 \
   kaveengayanga12/eventslk-client-portal:local
 ```
 
