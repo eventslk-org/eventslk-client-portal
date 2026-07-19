@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentication | EventXP</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="/css/style.css?v=3">
     <style>
         .auth-wrapper {
             min-height: calc(100vh - 80px);
@@ -52,9 +52,9 @@
 <body>
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">EventXP</a>
+            <a href="/index.html" class="logo">EventXP</a>
             <div class="nav-links">
-                <a href="index.html" class="nav-link">Discover</a>
+                <a href="/index.html" class="nav-link">Discover</a>
             </div>
         </div>
     </nav>
@@ -122,11 +122,11 @@
         </div>
     </div>
 
-    <script src="env-config.js"></script>
-    <script src="js/api.js?v=3"></script>
+    <script src="/env-config.js"></script>
+    <script src="/js/api.js?v=3"></script>
     <script>
         if (api.isAuthenticated()) {
-            window.location.href = 'index.html';
+            window.location.href = '/index.html';
         }
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -167,7 +167,7 @@
 
             try {
                 await api.login(email, document.getElementById('loginPass').value);
-                const redirect = urlParams.get('redirect') || 'index.html';
+                const redirect = urlParams.get('redirect') || '/index.html';
                 window.location.href = redirect;
             } catch (err) {
                 if (err.code === 'email not verified') {

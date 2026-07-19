@@ -93,7 +93,7 @@ class ClientApiService {
     localStorage.removeItem('client_token');
     this.user = null;
     this.token = null;
-    if (redirect) window.location.href = 'index.html';
+    if (redirect) window.location.href = '/index.html';
   }
 
   isAuthenticated() {

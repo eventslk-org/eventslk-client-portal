@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Bookings | EventXP</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="/css/style.css?v=3">
     <style>
         .profile-header {
             margin-bottom: 2rem;
@@ -44,9 +44,9 @@
 <body>
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">EventXP</a>
+            <a href="/index.html" class="logo">EventXP</a>
             <div class="nav-links">
-                <a href="index.html" class="nav-link">Discover</a>
+                <a href="/index.html" class="nav-link">Discover</a>
                 <button onclick="api.logout()" class="btn btn-outline" style="padding: 0.5rem 1rem;">Logout</button>
             </div>
         </div>
@@ -66,11 +66,11 @@
         </div>
     </main>
 
-    <script src="env-config.js"></script>
-    <script src="js/api.js?v=3"></script>
+    <script src="/env-config.js"></script>
+    <script src="/js/api.js?v=3"></script>
     <script>
         if (!api.isAuthenticated()) {
-            window.location.href = 'auth.html';
+            window.location.href = '/auth.html';
         }
 
         document.getElementById('welcomeText').textContent = `Hello, ${api.user.username}!`;
@@ -88,7 +88,7 @@
                         <div class="glass-card" style="padding: 3rem; text-align: center;">
                             <h3 style="margin-bottom: 1rem;">No bookings yet</h3>
                             <p class="text-muted" style="margin-bottom: 2rem;">You haven't booked any events. Discover amazing experiences right now!</p>
-                            <a href="index.html" class="btn btn-primary">Browse Events</a>
+                            <a href="/index.html" class="btn btn-primary">Browse Events</a>
                         </div>
                     `;
                     return;
