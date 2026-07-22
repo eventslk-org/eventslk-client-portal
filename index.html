@@ -1,269 +1,344 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Discover Events | EventXP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css?v=3">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css?v=3" />
     <style>
-        .event-img-placeholder {
-            height: 180px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            border-radius: 1rem 1rem 0 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.8;
-            font-size: 3rem;
-        }
-        .event-img {
-            height: 180px;
-            width: 100%;
-            object-fit: cover;
-            border-radius: 1rem 1rem 0 0;
-            display: block;
-        }
-        .event-details { padding: 1.5rem; }
-        .event-title { margin-bottom: 0.5rem; font-size: 1.25rem; }
-        .event-meta {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            gap: 0.5rem;
-        }
-        .chip {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background: rgba(139, 92, 246, 0.18);
-            color: #c4b5fd;
-        }
-        .chip-low  { background: rgba(245,158,11,0.18); color: #fcd34d; }
-        .chip-full { background: rgba(239,68,68,0.18);  color: #fca5a5; }
-        .price-tag { color: var(--text-main); font-weight: 600; }
-        .qty-control { display: flex; align-items: center; gap: 0.75rem; margin: 1rem 0; }
-        .qty-control input {
-            width: 80px; text-align: center;
-            padding: 0.6rem; border-radius: 0.6rem;
-            background: rgba(0,0,0,0.3); color: #fff;
-            border: 1px solid var(--surface-border);
-        }
-        .price-list { list-style: none; margin: 0.5rem 0; padding: 0; }
-        .price-list li { display: flex; justify-content: space-between; padding: 0.2rem 0; font-size: 0.95rem; }
+      .event-img-placeholder {
+        height: 180px;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        border-radius: 1rem 1rem 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.8;
+        font-size: 3rem;
+      }
+      .event-img {
+        height: 180px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 1rem 1rem 0 0;
+        display: block;
+      }
+      .event-details {
+        padding: 1.5rem;
+      }
+      .event-title {
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+      }
+      .event-meta {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+      .chip {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background: rgba(139, 92, 246, 0.18);
+        color: #c4b5fd;
+      }
+      .chip-low {
+        background: rgba(245, 158, 11, 0.18);
+        color: #fcd34d;
+      }
+      .chip-full {
+        background: rgba(239, 68, 68, 0.18);
+        color: #fca5a5;
+      }
+      .price-tag {
+        color: var(--text-main);
+        font-weight: 600;
+      }
+      .qty-control {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 1rem 0;
+      }
+      .qty-control input {
+        width: 80px;
+        text-align: center;
+        padding: 0.6rem;
+        border-radius: 0.6rem;
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        border: 1px solid var(--surface-border);
+      }
+      .price-list {
+        list-style: none;
+        margin: 0.5rem 0;
+        padding: 0;
+      }
+      .price-list li {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.2rem 0;
+        font-size: 0.95rem;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="navbar">
-        <div class="container nav-container">
-            <a href="/index.html" class="logo">EventXP</a>
-            <div class="nav-links" id="navLinks">
-                <!-- Rendered by JS based on Auth state -->
-            </div>
+      <div class="container nav-container">
+        <a href="/index.html" class="logo">EventLK</a>
+        <div class="nav-links" id="navLinks">
+          <!-- Rendered by JS based on Auth state -->
         </div>
+      </div>
     </nav>
 
     <header class="hero container">
-        <h1>Discover amazing <br>experiences.</h1>
-        <p>Book your spot at the most anticipated events, conferences, and meetups around the globe.</p>
+      <h1>Discover amazing <br />experiences.</h1>
+      <p>
+        Book your spot at the most anticipated events, conferences, and meetups
+        around the globe.
+      </p>
     </header>
 
     <main class="container">
-        <div class="grid" id="eventsGrid">
-            <!-- Events loaded here -->
-            <p class="text-muted" style="text-align:center; grid-column: 1 / -1;">Loading events...</p>
-        </div>
+      <div class="grid" id="eventsGrid">
+        <!-- Events loaded here -->
+        <p class="text-muted" style="text-align: center; grid-column: 1 / -1">
+          Loading events...
+        </p>
+      </div>
     </main>
 
     <!-- Booking Modal -->
-    <div id="bookingModal" class="modal-overlay" style="display: none;">
-        <div class="glass-card modal-content">
-            <h2 id="modalEventName" style="margin-bottom: 1rem; font-size: 1.5rem;">Event Name</h2>
-            <div class="modal-body" style="margin-bottom: 1rem; color: var(--text-muted);">
-                <p style="margin-bottom: 0.5rem;">📍 <strong>Place:</strong> <span id="modalLocation"></span></p>
-                <p style="margin-bottom: 0.5rem;">🕒 <strong>Date:</strong> <span id="modalDate"></span></p>
-                <p style="margin-bottom: 0.5rem;">👥 <strong>Available Seats:</strong> <span id="modalSeats"></span></p>
-                <div id="modalPrices"></div>
-                <p style="margin-top: 0.5rem;">📝 <strong>Details:</strong> <span id="modalDescription"></span></p>
-            </div>
-            <div class="qty-control" id="qtyControl">
-                <label for="seatQty"><strong>Seats:</strong></label>
-                <input type="number" id="seatQty" min="1" value="1">
-            </div>
-            <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 1rem;">
-                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-                <button class="btn btn-primary" id="confirmBookBtn">Confirm Booking</button>
-            </div>
+    <div id="bookingModal" class="modal-overlay" style="display: none">
+      <div class="glass-card modal-content">
+        <h2 id="modalEventName" style="margin-bottom: 1rem; font-size: 1.5rem">
+          Event Name
+        </h2>
+        <div
+          class="modal-body"
+          style="margin-bottom: 1rem; color: var(--text-muted)"
+        >
+          <p style="margin-bottom: 0.5rem">
+            📍 <strong>Place:</strong> <span id="modalLocation"></span>
+          </p>
+          <p style="margin-bottom: 0.5rem">
+            🕒 <strong>Date:</strong> <span id="modalDate"></span>
+          </p>
+          <p style="margin-bottom: 0.5rem">
+            👥 <strong>Available Seats:</strong> <span id="modalSeats"></span>
+          </p>
+          <div id="modalPrices"></div>
+          <p style="margin-top: 0.5rem">
+            📝 <strong>Details:</strong> <span id="modalDescription"></span>
+          </p>
         </div>
+        <div class="qty-control" id="qtyControl">
+          <label for="seatQty"><strong>Seats:</strong></label>
+          <input type="number" id="seatQty" min="1" value="1" />
+        </div>
+        <div
+          class="modal-actions"
+          style="display: flex; justify-content: flex-end; gap: 1rem"
+        >
+          <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" id="confirmBookBtn">
+            Confirm Booking
+          </button>
+        </div>
+      </div>
     </div>
 
     <script src="/env-config.js"></script>
     <script src="/js/api.js?v=3"></script>
     <script>
-        // Setup Nav
-        const navLinks = document.getElementById('navLinks');
-        if (api.isAuthenticated()) {
-            navLinks.innerHTML = `
+      // Setup Nav
+      const navLinks = document.getElementById("navLinks");
+      if (api.isAuthenticated()) {
+        navLinks.innerHTML = `
                 <a href="/profile.html" class="nav-link">My Bookings (${api.user.username})</a>
                 <button onclick="api.logout()" class="btn btn-outline" style="padding: 0.5rem 1rem;">Logout</button>
             `;
-        } else {
-            navLinks.innerHTML = `
+      } else {
+        navLinks.innerHTML = `
                 <a href="/auth.html" class="btn btn-outline" style="padding: 0.5rem 1rem; border: none;">Sign In</a>
                 <a href="/auth.html?mode=register" class="btn btn-primary" style="padding: 0.5rem 1rem;">Get Started</a>
             `;
-        }
+      }
 
-        function availableSeats(ev) {
-            const v = (ev.availableSeats ?? ev.totalSeats);
-            return (v === undefined || v === null) ? null : Number(v);
-        }
+      function availableSeats(ev) {
+        const v = ev.availableSeats ?? ev.totalSeats;
+        return v === undefined || v === null ? null : Number(v);
+      }
 
-        function seatsChip(ev) {
+      function seatsChip(ev) {
+        const avail = availableSeats(ev);
+        const total = Number(ev.totalSeats || 0);
+        if (avail === null) return "";
+        if (avail <= 0) return '<span class="chip chip-full">Sold out</span>';
+        if (total > 0 && avail / total <= 0.2)
+          return `<span class="chip chip-low">${avail} seats left</span>`;
+        return `<span class="chip">${avail} seats</span>`;
+      }
+
+      function priceLabel(ev) {
+        if (!ev.priceRanges || ev.priceRanges.length === 0)
+          return '<span class="price-tag">Free</span>';
+        const prices = ev.priceRanges
+          .map((p) => Number(p.price))
+          .filter((n) => !isNaN(n));
+        if (prices.length === 0) return '<span class="price-tag">Free</span>';
+        const min = Math.min(...prices);
+        return `<span class="price-tag">from Rs ${min}</span>`;
+      }
+
+      async function loadEvents() {
+        try {
+          const res = await api.getEvents();
+          const events = res.eventList || [];
+          const grid = document.getElementById("eventsGrid");
+          grid.innerHTML = "";
+
+          if (events.length === 0) {
+            grid.innerHTML =
+              '<p class="text-muted" style="text-align:center; grid-column: 1 / -1;">No upcoming events available right now.</p>';
+            return;
+          }
+
+          window.eventsData = events;
+          events.forEach((ev) => {
             const avail = availableSeats(ev);
-            const total = Number(ev.totalSeats || 0);
-            if (avail === null) return '';
-            if (avail <= 0) return '<span class="chip chip-full">Sold out</span>';
-            if (total > 0 && avail / total <= 0.2) return `<span class="chip chip-low">${avail} seats left</span>`;
-            return `<span class="chip">${avail} seats</span>`;
-        }
+            const soldOut = avail !== null && avail <= 0;
 
-        function priceLabel(ev) {
-            if (!ev.priceRanges || ev.priceRanges.length === 0) return '<span class="price-tag">Free</span>';
-            const prices = ev.priceRanges.map(p => Number(p.price)).filter(n => !isNaN(n));
-            if (prices.length === 0) return '<span class="price-tag">Free</span>';
-            const min = Math.min(...prices);
-            return `<span class="price-tag">from Rs ${min}</span>`;
-        }
+            const media = ev.imageUrl
+              ? `<img class="event-img" src="${ev.imageUrl}" alt="${ev.name}">`
+              : `<div class="event-img-placeholder">🎫</div>`;
 
-        async function loadEvents() {
-            try {
-                const res = await api.getEvents();
-                const events = res.eventList || [];
-                const grid = document.getElementById('eventsGrid');
-                grid.innerHTML = '';
+            const card = document.createElement("div");
+            card.className = "glass-card";
+            card.style.display = "flex";
+            card.style.flexDirection = "column";
+            card.style.height = "100%";
 
-                if (events.length === 0) {
-                    grid.innerHTML = '<p class="text-muted" style="text-align:center; grid-column: 1 / -1;">No upcoming events available right now.</p>';
-                    return;
-                }
-
-                window.eventsData = events;
-                events.forEach(ev => {
-                    const avail = availableSeats(ev);
-                    const soldOut = avail !== null && avail <= 0;
-
-                    const media = ev.imageUrl
-                        ? `<img class="event-img" src="${ev.imageUrl}" alt="${ev.name}">`
-                        : `<div class="event-img-placeholder">🎫</div>`;
-
-                    const card = document.createElement('div');
-                    card.className = 'glass-card';
-                    card.style.display = 'flex';
-                    card.style.flexDirection = 'column';
-                    card.style.height = '100%';
-
-                    card.innerHTML = `
+            card.innerHTML = `
                         ${media}
                         <div class="event-details" style="display: flex; flex-direction: column; flex: 1;">
                             <h3 class="event-title">${ev.name}</h3>
                             <div class="event-meta">
-                                <span>📍 ${ev.location || 'TBA'}</span>
+                                <span>📍 ${ev.location || "TBA"}</span>
                                 <span>${priceLabel(ev)}</span>
                             </div>
                             <div style="margin-bottom: 1rem;">${seatsChip(ev)}</div>
                             <div style="margin-top: auto;">
-                                <button class="btn ${soldOut ? 'btn-outline' : 'btn-primary'}" style="width: 100%;"
-                                    ${soldOut ? 'disabled' : ''}
+                                <button class="btn ${soldOut ? "btn-outline" : "btn-primary"}" style="width: 100%;"
+                                    ${soldOut ? "disabled" : ""}
                                     onclick="openBookingModal('${ev.eventId}')">
-                                    ${soldOut ? 'Sold Out' : 'Book Ticket'}
+                                    ${soldOut ? "Sold Out" : "Book Ticket"}
                                 </button>
                             </div>
                         </div>
                     `;
-                    grid.appendChild(card);
-                });
-            } catch (e) {
-                console.error(e);
-                document.getElementById('eventsGrid').innerHTML = '<p class="text-muted" style="text-align:center; grid-column: 1 / -1;">Could not load events.</p>';
-            }
+            grid.appendChild(card);
+          });
+        } catch (e) {
+          console.error(e);
+          document.getElementById("eventsGrid").innerHTML =
+            '<p class="text-muted" style="text-align:center; grid-column: 1 / -1;">Could not load events.</p>';
+        }
+      }
+
+      let selectedEventId = null;
+
+      function openBookingModal(eventId) {
+        if (!api.isAuthenticated()) {
+          window.location.href = "/auth.html?redirect=/index.html";
+          return;
         }
 
-        let selectedEventId = null;
+        selectedEventId = eventId;
+        const ev = window.eventsData.find((e) => e.eventId === eventId);
+        if (!ev) return;
 
-        function openBookingModal(eventId) {
-            if (!api.isAuthenticated()) {
-                window.location.href = '/auth.html?redirect=/index.html';
-                return;
-            }
+        const dateStr =
+          ev.dates && ev.dates.length > 0
+            ? new Date(ev.dates[0]).toLocaleString()
+            : "TBA";
+        const avail = availableSeats(ev);
 
-            selectedEventId = eventId;
-            const ev = window.eventsData.find(e => e.eventId === eventId);
-            if (!ev) return;
+        document.getElementById("modalEventName").textContent = ev.name;
+        document.getElementById("modalLocation").textContent =
+          ev.location || "TBA";
+        document.getElementById("modalDate").textContent = dateStr;
+        document.getElementById("modalSeats").textContent =
+          avail === null ? "Open" : `${avail} of ${ev.totalSeats}`;
+        document.getElementById("modalDescription").textContent =
+          ev.description || "No description provided.";
 
-            const dateStr = ev.dates && ev.dates.length > 0
-                ? new Date(ev.dates[0]).toLocaleString()
-                : 'TBA';
-            const avail = availableSeats(ev);
-
-            document.getElementById('modalEventName').textContent = ev.name;
-            document.getElementById('modalLocation').textContent = ev.location || 'TBA';
-            document.getElementById('modalDate').textContent = dateStr;
-            document.getElementById('modalSeats').textContent = avail === null ? 'Open' : `${avail} of ${ev.totalSeats}`;
-            document.getElementById('modalDescription').textContent = ev.description || 'No description provided.';
-
-            // Price ranges
-            const pricesEl = document.getElementById('modalPrices');
-            if (ev.priceRanges && ev.priceRanges.length > 0) {
-                pricesEl.innerHTML = '🎟️ <strong>Pricing:</strong><ul class="price-list">' +
-                    ev.priceRanges.map(p => `<li><span>${p.label || 'General'}</span><span class="price-tag">Rs ${p.price ?? 0}</span></li>`).join('') +
-                    '</ul>';
-            } else {
-                pricesEl.innerHTML = '🎟️ <strong>Pricing:</strong> Free';
-            }
-
-            // Seat quantity control
-            const qty = document.getElementById('seatQty');
-            const maxSeats = avail === null ? 99 : Math.max(1, avail);
-            qty.max = maxSeats;
-            qty.value = 1;
-
-            document.getElementById('bookingModal').style.display = 'flex';
-            const confirmBtn = document.getElementById('confirmBookBtn');
-            confirmBtn.onclick = () => confirmBooking(eventId);
+        // Price ranges
+        const pricesEl = document.getElementById("modalPrices");
+        if (ev.priceRanges && ev.priceRanges.length > 0) {
+          pricesEl.innerHTML =
+            '🎟️ <strong>Pricing:</strong><ul class="price-list">' +
+            ev.priceRanges
+              .map(
+                (p) =>
+                  `<li><span>${p.label || "General"}</span><span class="price-tag">Rs ${p.price ?? 0}</span></li>`,
+              )
+              .join("") +
+            "</ul>";
+        } else {
+          pricesEl.innerHTML = "🎟️ <strong>Pricing:</strong> Free";
         }
 
-        function closeModal() {
-            document.getElementById('bookingModal').style.display = 'none';
-            selectedEventId = null;
+        // Seat quantity control
+        const qty = document.getElementById("seatQty");
+        const maxSeats = avail === null ? 99 : Math.max(1, avail);
+        qty.max = maxSeats;
+        qty.value = 1;
+
+        document.getElementById("bookingModal").style.display = "flex";
+        const confirmBtn = document.getElementById("confirmBookBtn");
+        confirmBtn.onclick = () => confirmBooking(eventId);
+      }
+
+      function closeModal() {
+        document.getElementById("bookingModal").style.display = "none";
+        selectedEventId = null;
+      }
+
+      async function confirmBooking(eventId) {
+        const confirmBtn = document.getElementById("confirmBookBtn");
+        const qty = document.getElementById("seatQty");
+        const seats = Math.max(1, parseInt(qty.value, 10) || 1);
+
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = "Booking...";
+
+        try {
+          await api.bookEvent(eventId, api.user.userId, seats);
+          alert(
+            `🎉 Success! ${seats} ticket(s) booked. A confirmation email is on its way.`,
+          );
+          closeModal();
+          loadEvents();
+        } catch (e) {
+          alert("Failed to book event. " + e.message);
+        } finally {
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = "Confirm Booking";
         }
+      }
 
-        async function confirmBooking(eventId) {
-            const confirmBtn = document.getElementById('confirmBookBtn');
-            const qty = document.getElementById('seatQty');
-            const seats = Math.max(1, parseInt(qty.value, 10) || 1);
-
-            confirmBtn.disabled = true;
-            confirmBtn.textContent = 'Booking...';
-
-            try {
-                await api.bookEvent(eventId, api.user.userId, seats);
-                alert(`🎉 Success! ${seats} ticket(s) booked. A confirmation email is on its way.`);
-                closeModal();
-                loadEvents();
-            } catch (e) {
-                alert("Failed to book event. " + e.message);
-            } finally {
-                confirmBtn.disabled = false;
-                confirmBtn.textContent = 'Confirm Booking';
-            }
-        }
-
-        loadEvents();
+      loadEvents();
     </script>
-</body>
+  </body>
 </html>
