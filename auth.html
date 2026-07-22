@@ -5,29 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentication | EventXP</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css?v=3">
+    <link rel="stylesheet" href="/css/style.css?v=4">
     <style>
         .auth-wrapper {
             min-height: calc(100vh - 80px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: clamp(1rem, 5vw, 2rem);
         }
         .auth-card {
             width: 100%;
             max-width: 480px;
-            padding: 2.5rem;
+            padding: clamp(1.5rem, 5vw, 2.5rem);
             position: relative;
             overflow: hidden;
         }
+        /* A form card shouldn't lift away under the cursor */
+        .auth-card:hover {
+            transform: none;
+        }
         .auth-header { text-align: center; margin-bottom: 2rem; }
         .auth-header h2 {
-            font-size: 2rem;
+            font-size: clamp(1.6rem, 5vw, 2rem);
             font-weight: 800;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            margin-bottom: 0.35rem;
         }
         .toggle-text {
             text-align: center;
@@ -41,8 +45,12 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .toggle-text a:hover { text-decoration: underline; }
         .hidden-form { display: none; }
-        .half-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .half-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+        @media (max-width: 480px) {
+            .half-grid { grid-template-columns: 1fr; }
+        }
         .resend-link {
             color: var(--primary); font-weight: 600; cursor: pointer;
             text-decoration: underline; background: none; border: none; font-size: inherit; padding: 0;

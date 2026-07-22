@@ -8,16 +8,15 @@
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/css/style.css?v=3" />
+    <link rel="stylesheet" href="/css/style.css?v=4" />
     <style>
       .event-img-placeholder {
         height: 180px;
-        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
         border-radius: 1rem 1rem 0 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        opacity: 0.8;
         font-size: 3rem;
       }
       .event-img {
@@ -41,6 +40,7 @@
         display: flex;
         justify-content: space-between;
         gap: 0.5rem;
+        flex-wrap: wrap;
       }
       .chip {
         display: inline-block;
@@ -48,16 +48,16 @@
         border-radius: 999px;
         font-size: 0.75rem;
         font-weight: 600;
-        background: rgba(139, 92, 246, 0.18);
-        color: #c4b5fd;
+        background: var(--primary-soft);
+        color: var(--primary-hover);
       }
       .chip-low {
-        background: rgba(245, 158, 11, 0.18);
-        color: #fcd34d;
+        background: #fffbeb;
+        color: var(--warning);
       }
       .chip-full {
-        background: rgba(239, 68, 68, 0.18);
-        color: #fca5a5;
+        background: #fef2f2;
+        color: var(--danger);
       }
       .price-tag {
         color: var(--text-main);
@@ -73,10 +73,17 @@
         width: 80px;
         text-align: center;
         padding: 0.6rem;
+        font-family: inherit;
+        font-size: 1rem;
         border-radius: 0.6rem;
-        background: rgba(0, 0, 0, 0.3);
-        color: #fff;
+        background: var(--surface);
+        color: var(--text-main);
         border: 1px solid var(--surface-border);
+      }
+      .qty-control input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: var(--ring);
       }
       .price-list {
         list-style: none;
@@ -170,7 +177,7 @@
             `;
       } else {
         navLinks.innerHTML = `
-                <a href="/auth.html" class="btn btn-outline" style="padding: 0.5rem 1rem; border: none;">Sign In</a>
+                <a href="/auth.html" class="btn btn-outline" style="padding: 0.5rem 1rem;">Sign In</a>
                 <a href="/auth.html?mode=register" class="btn btn-primary" style="padding: 0.5rem 1rem;">Get Started</a>
             `;
       }
